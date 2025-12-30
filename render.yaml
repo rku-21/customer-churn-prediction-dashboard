@@ -1,0 +1,20 @@
+services:
+  # Web Service - FastAPI Backend + React Frontend
+  - type: web
+    name: customer-churn-prediction
+    env: python
+    region: oregon
+    buildCommand: |
+      pip install -r requirements.txt
+      cd churn-frontend
+      npm install
+      npm run build
+      cd ..
+    startCommand: uvicorn app:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.0
+      - key: PORT
+        value: 10000
+    healthCheckPath: /health
+    autoDeploy: true
