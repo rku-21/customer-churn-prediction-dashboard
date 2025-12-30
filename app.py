@@ -56,7 +56,11 @@ def predict(data: CustomerInput):
 
     df_scaled = scaler.transform(df)
 
-    prob = model.predict_proba(df_scaled)[0][1]
+    import math
+
+    score = model.decision_function(df_scaled)[0]
+    prob = 1 / (1 + math.exp(-score))  # sigmoid
+
 
     if prob < 0.4:
         risk = "Low"
